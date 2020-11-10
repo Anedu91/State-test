@@ -5,11 +5,22 @@ import * as api from "../../api";
 import Items from "../../components/Items";
 import FavoriteItem from "../../components/FavoriteItem";
 import ChangeForm from "../../components/ChangeForm";
+import CreateAnimal from "../../components/CreateAnimal";
 
 function Home(props) {
+  const base = {
+    id: 21,
+    name: "New name",
+    gender: "Female",
+    avatar: "",
+    is_in_favorite: false,
+  };
   const [animals, setAnimals] = useState(api.Animals.list());
   const [toUpdate, setToUpdate] = useState();
-  const [toDelete, setToDelete] = useState();
+  const [newAnimal, setNewAnimal] = useState({ ...base });
+
+  const [updateForm, setUpdateForm] = useState(false);
+  const [createForm, setCreateForm] = useState(false);
 
   const toFavorite = (id) => {
     setAnimals(
@@ -26,6 +37,7 @@ function Home(props) {
   };
 
   const animalToUpdate = (id) => {
+    setUpdateForm(true);
     setToUpdate(id);
   };
   const updateAnimal = (id, updatedAnimal) => {
@@ -44,9 +56,16 @@ function Home(props) {
     const copyAnimals = [...animals];
     setAnimals(copyAnimals.filter((animal) => animal.id !== id));
   };
+  const createAnimal = (newAnimal) => {
+    setNewAnimal({ ...newAnimal });
+  };
+  const addNewAnimal = () => {
+    setAnimals([newAnimal].concat(animals));
+  };
   const loadList = () => {
     setAnimals(api.Animals.list());
   };
+
   return (
     <DefaultLayout>
       <div className="">
@@ -80,10 +99,26 @@ function Home(props) {
         </ul>
       </div>
       <div className="">
-        <ChangeForm
-          toUpdate={animals.filter((animal) => animal.id === toUpdate)[0]}
-          updateAnimal={updateAnimal}
-        />
+        <button
+          className="w-full p-2 bg-blue-500	mt-3 text-white"
+          onClick={() => setCreateForm(!createForm)}
+        >
+          Create a Kitty
+        </button>
+        {updateForm ? (
+          <ChangeForm
+            toUpdate={animals.filter((animal) => animal.id === toUpdate)[0]}
+            updateAnimal={updateAnimal}
+            closeForm={() => setUpdateForm(false)}
+          />
+        ) : null}
+        {createForm ? (
+          <CreateAnimal
+            newAnimal={newAnimal}
+            createAnimal={createAnimal}
+            addNewAnimal={addNewAnimal}
+          />
+        ) : null}
       </div>
     </DefaultLayout>
   );

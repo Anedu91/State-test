@@ -8,7 +8,7 @@ function FavoriteItem(props) {
   );
   return (
     <div className={containerClassName}>
-      <img src={props.animal.avatar} alt="" />
+      <img src={props.animal.avatar} alt="" className="mr-4" />
       <p>{props.animal.name}</p>
       <button
         className="ml-auto text-2xl focus:outline-none"

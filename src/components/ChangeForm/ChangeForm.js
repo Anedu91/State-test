@@ -2,7 +2,6 @@ import React from "react";
 
 function Form(props) {
   const handleChange = (event) => {
-    console.log(event.currentTarget.value);
     const updatedAnimal = {
       ...props.toUpdate,
       [event.currentTarget.name]: event.currentTarget.value,
@@ -11,9 +10,18 @@ function Form(props) {
   };
   return (
     <>
-      <h2 className="text-3xl mb-3">Change your Animal</h2>
-      <form action="" className="flex flex-col border border-black p-3">
-        <label htmlFor="name">Introduce a name</label>
+      <h2 className="text-3xl mb-3">Change your Kitty</h2>
+      <form
+        action=""
+        className="relative flex flex-col border border-black p-3"
+      >
+        <button
+          className="text-2xl absolute right-0 top-0 mr-3"
+          onClick={props.closeForm}
+        >
+          &times;
+        </button>
+        <label htmlFor="name">Introduce a new name</label>
         <input
           type="text"
           name="name"
@@ -22,10 +30,11 @@ function Form(props) {
           value={props.toUpdate ? props.toUpdate.name : ""}
           onChange={handleChange}
         />
+        <label htmlFor="gender">Gender change</label>
         <select
           name="gender"
-          id=""
-          className="mt-2 mb-2 p-3"
+          id="gender"
+          className="mt-2 mb-2 p-3 bg-green-300"
           value={props.toUpdate ? props.toUpdate.gender : ""}
           onChange={handleChange}
         >
